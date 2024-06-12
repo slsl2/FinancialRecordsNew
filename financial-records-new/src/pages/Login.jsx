@@ -1,21 +1,50 @@
-import React from "react";
+import React, { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import StyledContainer from "../styles/StyledContainer";
 import Button from "../components/atoms/Button";
+import { Link } from "react-router-dom";
+import { login } from "../lib/api/auth.js";
+import { AuthContext } from "../contexts/AuthContext";
 
 const Login = () => {
+  const [id, setId] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+  const { login: authLogin } = useContext(AuthContext);
+
+  const handleLogin = async () => {
+    const response = await login({ id: id, password: password });
+    if (response) {
+      authLogin(response.accessToken);
+      confirm("로그인 성공!");
+      navigate("/");
+    } else {
+      alert("로그인 실패");
+    }
+  };
+
   return (
     <>
       <LoginPage>
-        {" "}
         <LoginForm>
           <InputDiv>
             <span>로그인 아이디</span>
-            <Input />
+            <Input
+              type="text"
+              value={id}
+              onChange={(e) => setId(e.target.value)}
+              placeholder="ID"
+            />
           </InputDiv>
           <InputDiv>
             <span>비밀번호</span>
-            <Input />
+            <Input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Password"
+            />
           </InputDiv>
           <Button
             width="100%"
@@ -24,14 +53,17 @@ const Login = () => {
             margin="0 0 1.6rem 0"
             contents="로그인"
             type="button"
+            onClick={handleLogin}
           />
-          <Button
-            width="100%"
-            backgroundColor="#6c757d"
-            color="white"
-            contents="회원가입"
-            type="button"
-          />
+          <Link to="/signup">
+            <Button
+              width="100%"
+              backgroundColor="#6c757d"
+              color="white"
+              contents="회원가입"
+              type="button"
+            />
+          </Link>
         </LoginForm>
       </LoginPage>
     </>
@@ -47,7 +79,7 @@ const LoginPage = styled.div`
   align-items: center;
 `;
 
-const LoginForm = styled(StyledContainer).attrs({ as: "form" })`
+const LoginForm = styled(StyledContainer).attrs({ as: "div" })`
   font-size: 1.4rem;
   display: flex;
   flex-direction: column;
