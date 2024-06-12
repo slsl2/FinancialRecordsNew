@@ -19,11 +19,15 @@ const Header = () => {
     <HeaderContainer>
       <HeaderLeft>
         {" "}
-        <Link to="/">HOME</Link>
+        <Link to="/" style={{ color: "white" }}>
+          HOME
+        </Link>
       </HeaderLeft>
       <HeaderRight>
         <div>사진</div>
-        <Link to="/mypage">아이디</Link>
+        <Link to="/mypage" style={{ color: "white" }}>
+          아이디
+        </Link>
         {isAuthenticated ? (
           <Button
             backgroundColor="#ff4d4d"
@@ -70,6 +74,7 @@ const HeaderLeft = styled.div`
 `;
 const HeaderRight = styled.div`
   display: flex;
+  gap: 2rem;
   align-items: center;
 `;
 

@@ -6,17 +6,25 @@ import Button from "../components/atoms/Button";
 import { Link } from "react-router-dom";
 import { login } from "../lib/api/auth.js";
 import { AuthContext } from "../contexts/AuthContext";
+import { UserContext } from "../contexts/UserContext.jsx";
 
 const Login = () => {
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const { login: authLogin } = useContext(AuthContext);
+  const { setUser } = useContext(UserContext);
 
   const handleLogin = async () => {
-    const response = await login({ id: id, password: password });
-    if (response) {
-      authLogin(response.accessToken);
+    const { userId, nickname, avatar, accessToken } = await login({
+      id: id,
+      password: password,
+    });
+
+    setUser({ userId, nickname, avatar });
+
+    if (accessToken) {
+      authLogin(accessToken);
       confirm("로그인 성공!");
       navigate("/");
     } else {
