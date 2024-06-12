@@ -95,7 +95,7 @@ const SignUp = () => {
 export default SignUp;
 
 const SignUpPage = styled.div`
-  height: 100vh;
+  margin: 10rem;
   display: flex;
   justify-content: center;
   align-items: center;

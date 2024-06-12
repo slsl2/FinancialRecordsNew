@@ -3,9 +3,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
 import styled from "styled-components";
 import Button from "../atoms/Button";
+import { UserContext } from "../../contexts/UserContext";
 
 const Header = () => {
   const { isAuthenticated, logout } = useContext(AuthContext);
+  const { user } = useContext(UserContext);
+
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -18,16 +21,17 @@ const Header = () => {
   return (
     <HeaderContainer>
       <HeaderLeft>
-        {" "}
         <Link to="/" style={{ color: "white" }}>
           HOME
         </Link>
       </HeaderLeft>
       <HeaderRight>
-        <div>사진</div>
-        <Link to="/mypage" style={{ color: "white" }}>
-          아이디
-        </Link>
+        {user && (
+          <Link to="/profile">
+            <UserAvatar src={user.avatar} alt="User Avatar"></UserAvatar>
+            <UserNickname>{user.nickname}</UserNickname>
+          </Link>
+        )}
         {isAuthenticated ? (
           <Button
             backgroundColor="#ff4d4d"
@@ -76,6 +80,16 @@ const HeaderRight = styled.div`
   display: flex;
   gap: 2rem;
   align-items: center;
+`;
+
+const UserAvatar = styled.img`
+  width: 2rem;
+  height: 2rem;
+  color: white;
+`;
+
+const UserNickname = styled.span`
+  color: white;
 `;
 
 export default Header;

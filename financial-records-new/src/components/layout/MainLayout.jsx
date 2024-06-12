@@ -1,15 +1,15 @@
 import React from "react";
 import styled from "styled-components";
 
-const Layout = ({ children }) => {
+const MainLayout = ({ children }) => {
   return (
     <>
-      <LayoutDiv>{children}</LayoutDiv>
+      <MainLayoutDiv>{children}</MainLayoutDiv>
     </>
   );
 };
 
-const LayoutDiv = styled.div`
+const MainLayoutDiv = styled.div`
   font-size: 2rem;
   width: 80%;
   max-width: 880px; /* 변경하기 */
@@ -17,4 +17,4 @@ const LayoutDiv = styled.div`
   margin: 0 auto; /* 왼쪽 오른쪽 margin이 동일해짐 */
 `;
 
-export default Layout;
+export default MainLayout;

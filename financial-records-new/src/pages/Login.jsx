@@ -5,7 +5,7 @@ import StyledContainer from "../styles/StyledContainer";
 import Button from "../components/atoms/Button";
 import { Link } from "react-router-dom";
 import { login } from "../lib/api/auth.js";
-import { AuthContext } from "../contexts/AuthContext";
+import { AuthContext } from "../contexts/AuthContext.jsx";
 import { UserContext } from "../contexts/UserContext.jsx";
 
 const Login = () => {
@@ -81,7 +81,7 @@ const Login = () => {
 export default Login;
 
 const LoginPage = styled.div`
-  height: 100vh;
+  margin: 10rem;
   display: flex;
   justify-content: center;
   align-items: center;
