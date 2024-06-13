@@ -1,21 +1,21 @@
 import React from "react";
 import GlobalStyle from "./styles/GlobalStyle.jsx";
 import SharedRouter from "./shared/Router.jsx";
-import { RecordProvider } from "./contexts/RecordContext.jsx";
 import { AuthProvider } from "./contexts/AuthContext.jsx";
 import { UserProvider } from "./contexts/UserContext.jsx";
+import QueryClientSetup from "./QueryClientSetup.jsx";
 
 const App = () => {
   return (
     <>
-      <AuthProvider>
-        <UserProvider>
-          <RecordProvider>
+      <QueryClientSetup>
+        <AuthProvider>
+          <UserProvider>
             <GlobalStyle />
             <SharedRouter />
-          </RecordProvider>
-        </UserProvider>
-      </AuthProvider>
+          </UserProvider>
+        </AuthProvider>
+      </QueryClientSetup>
     </>
   );
 };

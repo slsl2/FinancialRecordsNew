@@ -1,12 +1,10 @@
 import styled from "styled-components";
 import StyledContainer from "../../styles/StyledContainer.jsx";
-import { RecordContext } from "../../contexts/RecordContext.jsx";
 import Button from "../atoms/Button.jsx";
-import { useState, useEffect, useRef, useContext } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
 const RecordUpdateContainer = () => {
-  const { records, setRecords } = useContext(RecordContext);
   const { id } = useParams();
   const navigate = useNavigate();
   const dateRef = useRef(null);

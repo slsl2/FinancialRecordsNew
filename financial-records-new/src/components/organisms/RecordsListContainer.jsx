@@ -1,21 +1,33 @@
 import styled from "styled-components";
 import StyledContainer from "../../styles/StyledContainer.jsx";
 import RecordBlock from "../molecules/RecordBlock.jsx";
+import { useQuery } from "@tanstack/react-query";
+import { getRecords } from "../../lib/api/record.js";
 
-const RecordsListContainer = ({ filteredRecords }) => {
+const RecordsListContainer = () => {
+  const {
+    data: records = [],
+    isLoading,
+    error,
+  } = useQuery({ queryKey: ["record"], queryFn: getRecords });
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <RecordsUl>
-      {filteredRecords.length === 0 ? (
+      {records.length === 0 ? (
         <NoRecords>지출이 없습니다.</NoRecords>
       ) : (
-        filteredRecords.map((filteredRecord) => (
+        records.map((record) => (
           <RecordBlock
-            key={filteredRecord.id}
-            id={filteredRecord.id}
-            date={filteredRecord.date}
-            item={filteredRecord.item}
-            amount={filteredRecord.amount}
-            description={filteredRecord.description}
+            key={record.id}
+            id={record.id}
+            date={record.date}
+            item={record.item}
+            amount={record.amount}
+            description={record.description}
           />
         ))
       )}

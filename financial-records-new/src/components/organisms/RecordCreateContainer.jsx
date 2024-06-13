@@ -1,12 +1,10 @@
-import { useState, useEffect, useRef, useContext } from "react";
+import { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import StyledContainer from "../../styles/StyledContainer";
-import { RecordContext } from "../../contexts/RecordContext";
 import Button from "../atoms/Button";
 import { v4 as uuidv4 } from "uuid";
 
 const RecordCreateContainer = () => {
-  const { records, setRecords } = useContext(RecordContext);
   const [date, setDate] = useState(new Date().toISOString().split("T")[0]); // 초기값을 현재 날짜로
   const [item, setItem] = useState("");
   const [amount, setAmount] = useState("");
