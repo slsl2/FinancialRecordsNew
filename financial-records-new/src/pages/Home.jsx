@@ -3,17 +3,16 @@ import RecordCreateContainer from "../components/organisms/RecordCreateContainer
 import SelectMonthContainer from "../components/organisms/SelectMonthContainter.jsx";
 import RecordsListContainer from "../components/organisms/RecordsListContainer.jsx";
 
-const Home = ({ selectedMonth, setSelectedMonth }) => {
-  const [filteredRecords, setFilteredRecords] = useState([]);
+const Home = () => {
+  const [selectedMonth, setSelectedMonth] = useState("");
   return (
     <>
-      <RecordCreateContainer />
+      <RecordCreateContainer setSelectedMonth={setSelectedMonth} />
       <SelectMonthContainer
         selectedMonth={selectedMonth}
         setSelectedMonth={setSelectedMonth}
-        setFilteredRecords={setFilteredRecords}
       />
-      <RecordsListContainer filteredRecords={filteredRecords} />
+      <RecordsListContainer selectedMonth={selectedMonth} />
     </>
   );
 };

@@ -1,51 +1,68 @@
 import styled from "styled-components";
 import StyledContainer from "../../styles/StyledContainer.jsx";
-import { RecordContext } from "../../contexts/RecordContext.jsx";
 import Button from "../atoms/Button.jsx";
-import { useState, useEffect, useRef, useContext } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { deleteRecord, getRecord, putRecord } from "../../lib/api/record.js";
 
 const RecordUpdateContainer = () => {
-  const { records, setRecords } = useContext(RecordContext);
   const { id } = useParams();
   const navigate = useNavigate();
   const dateRef = useRef(null);
-  const record = records.find((record) => record.id === id);
 
-  const [date, setDate] = useState(record ? record.date : "");
-  const [item, setItem] = useState(record ? record.item : "");
-  const [amount, setAmount] = useState(record ? record.amount : "");
-  const [description, setDescription] = useState(
-    record ? record.description : ""
-  );
+  const {
+    data: selectedRecord,
+    isLoading,
+    error,
+  } = useQuery({ queryKey: ["records", id], queryFn: getRecord });
+
+  const [date, setDate] = useState("");
+  const [item, setItem] = useState("");
+  const [amount, setAmount] = useState("");
+  const [description, setDescription] = useState("");
 
   useEffect(() => {
-    if (record) {
-      setDate(record.date);
-      setItem(record.item);
-      setAmount(record.amount);
-      setDescription(record.description);
+    if (selectedRecord) {
+      setDate(selectedRecord.date);
+      setItem(selectedRecord.item);
+      setAmount(selectedRecord.amount);
+      setDescription(selectedRecord.description);
       dateRef.current.focus();
     }
-  }, [record]);
+  }, [selectedRecord]);
 
-  const updateRecord = (e) => {
-    e.preventDefault();
-    const updatedRecords = records.map((record) =>
-      record.id === id
-        ? { ...record, date, item, amount: +amount, description }
-        : record
-    );
-    setRecords(updatedRecords);
-    navigate("/");
+  const mutationUpdate = useMutation({
+    mutationFn: putRecord,
+    onSuccess: () => {
+      navigate("/");
+    },
+  });
+
+  const mutationDelete = useMutation({
+    mutationFn: deleteRecord,
+    onSuccess: () => {
+      navigate("/");
+    },
+  });
+
+  const handleUpdateRecord = () => {
+    const updatedRecord = {
+      id: id,
+      date: date,
+      item: item,
+      amount: parseInt(amount, 10),
+      description: description,
+    };
+
+    mutationUpdate.mutate(updatedRecord);
   };
 
-  const deleteRecord = (id) => {
-    if (!confirm("정말로 삭제하시겠습니까?")) {
+  const handleDeleteRecord = () => {
+    if (!confirm("정말 삭제하시겠습니까?")) {
       return false;
     }
-    setRecords(records.filter((record) => record.id !== id));
-    navigate("/");
+    mutationDelete.mutate(id);
   };
 
   const goBack = (e) => {
@@ -53,14 +70,18 @@ const RecordUpdateContainer = () => {
     navigate("/");
   };
 
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <>
       <RecordUpdateDiv>
-        <RecordUpdateForm onSubmit={updateRecord}>
+        <RecordUpdateForm>
           <span>날짜</span>
           <Input
             ref={dateRef}
-            type="text"
+            type="date"
             value={date}
             onChange={(e) => setDate(e.target.value)}
           />
@@ -82,27 +103,31 @@ const RecordUpdateContainer = () => {
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           />
+        </RecordUpdateForm>
+        <BtnsDiv>
           <Button
             backgroundColor="#4287f5"
             color="white"
-            contents="수정"
-            type="submit"
+            contents="수정 완료"
+            type="button"
+            width="100%"
+            onClick={handleUpdateRecord}
           ></Button>
-        </RecordUpdateForm>
-        <BtnsDiv>
           <Button
             backgroundColor="#ff4d4d"
             color="white"
             margin="0 1rem 0 0"
             contents="삭제"
             type="button"
-            onClick={() => deleteRecord(id)}
+            width="100%"
+            onClick={handleDeleteRecord}
           ></Button>
           <Button
             backgroundColor="#6c757d"
             color="white"
             contents="뒤로 가기"
             type="button"
+            width="100%"
             onClick={goBack}
           ></Button>
         </BtnsDiv>
@@ -127,8 +152,11 @@ const Input = styled.input`
 `;
 
 const BtnsDiv = styled.div`
-  display: flex;
   margin-top: 1rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 `;
 
 export default RecordUpdateContainer;
