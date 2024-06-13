@@ -3,9 +3,12 @@ import StyledContainer from "../../styles/StyledContainer.jsx";
 import RecordBlock from "../molecules/RecordBlock.jsx";
 import { useQuery } from "@tanstack/react-query";
 import { getRecords } from "../../lib/api/record.js";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { UserContext } from "../../contexts/UserContext.jsx";
 
 const RecordsListContainer = ({ selectedMonth }) => {
+  const { user } = useContext(UserContext);
+  console.log(user);
   const [filteredRecords, setFilteredRecords] = useState([]);
   const {
     data: records = [],
@@ -39,6 +42,8 @@ const RecordsListContainer = ({ selectedMonth }) => {
             item={filteredRecord.item}
             amount={filteredRecord.amount}
             description={filteredRecord.description}
+            createdBy={filteredRecord.createdBy}
+            isUser={user.userId === filteredRecord.createdBy}
           />
         ))
       )}

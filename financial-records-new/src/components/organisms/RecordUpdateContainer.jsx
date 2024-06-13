@@ -53,6 +53,7 @@ const RecordUpdateContainer = () => {
       item: item,
       amount: parseInt(amount, 10),
       description: description,
+      createdBy: selectedRecord.createdBy,
     };
 
     mutationUpdate.mutate(updatedRecord);

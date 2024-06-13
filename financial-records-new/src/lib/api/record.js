@@ -35,7 +35,7 @@ export const postRecord = async (newRecord) => {
 };
 
 export const putRecord = async (updatedRecord) => {
-  const { id, ...rest } = updatedRecord; // id 제외 다른 건 (rest things) 바뀔 것이다
+  const { id, ...rest } = updatedRecord; // id, createdBy 제외 다른 건 (rest things) 바뀔 것이다
   try {
     const { data } = await axios.put(`${JSON_SERVER_HOST}/records/${id}`, rest);
     return data;
