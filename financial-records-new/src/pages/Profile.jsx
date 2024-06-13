@@ -67,6 +67,7 @@ const Profile = () => {
             <AvatarPreview src={previewAvatar} alt="Avatar Preview" />
           )}
           <InputDiv>
+            <span>프로필 변경</span>
             <Input type="file" accept="image/*" onChange={handleAvatarChange} />
           </InputDiv>
           <InputDiv>
@@ -152,7 +153,7 @@ const AvatarPreview = styled.img`
   width: 70%;
   object-fit: cover;
   border-radius: 50%;
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
 `;
 
 export default Profile;
