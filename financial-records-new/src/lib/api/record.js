@@ -1,10 +1,10 @@
 import axios from "axios";
 
-const JSON_SERVER_HOST = "http://localhost:5000";
+const recordsUrl = import.meta.env.VITE_REACT_APP_RECORDS;
 
 export const getRecords = async () => {
   try {
-    const response = await axios.get(`${JSON_SERVER_HOST}/records`);
+    const response = await axios.get(`${recordsUrl}/records`);
     return response.data;
   } catch (error) {
     console.log(error);
@@ -14,9 +14,7 @@ export const getRecords = async () => {
 
 export const getRecord = async ({ queryKey }) => {
   try {
-    const response = await axios.get(
-      `${JSON_SERVER_HOST}/records/${queryKey[1]}`
-    );
+    const response = await axios.get(`${recordsUrl}/records/${queryKey[1]}`);
     return response.data;
   } catch (error) {
     console.log(error);
@@ -26,7 +24,7 @@ export const getRecord = async ({ queryKey }) => {
 
 export const postRecord = async (newRecord) => {
   try {
-    const { data } = await axios.post(`${JSON_SERVER_HOST}/records`, newRecord);
+    const { data } = await axios.post(`${recordsUrl}/records`, newRecord);
     return data;
   } catch (error) {
     console.log(error);
@@ -37,7 +35,7 @@ export const postRecord = async (newRecord) => {
 export const putRecord = async (updatedRecord) => {
   const { id, ...rest } = updatedRecord; // id, createdBy 제외 다른 건 (rest things) 바뀔 것이다
   try {
-    const { data } = await axios.put(`${JSON_SERVER_HOST}/records/${id}`, rest);
+    const { data } = await axios.put(`${recordsUrl}/records/${id}`, rest);
     return data;
   } catch (error) {
     console.log(error);
@@ -47,7 +45,7 @@ export const putRecord = async (updatedRecord) => {
 
 export const deleteRecord = async (id) => {
   try {
-    const { data } = await axios.delete(`${JSON_SERVER_HOST}/records/${id}`);
+    const { data } = await axios.delete(`${recordsUrl}/records/${id}`);
     return data;
   } catch (error) {
     console.log(error);
