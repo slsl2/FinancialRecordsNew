@@ -77,7 +77,7 @@ const SignUp = () => {
             type="button"
             onClick={handleRegister}
           />
-          <Link to="/login">
+          <Link style={{ width: "100%" }} to="/login">
             <Button
               width="100%"
               backgroundColor="#6c757d"

@@ -27,8 +27,13 @@ const Header = () => {
       </HeaderLeft>
       <HeaderRight>
         {user && (
-          <Link to="/profile">
-            <UserAvatar src={user.avatar} alt="User Avatar"></UserAvatar>
+          <Link
+            to="/profile"
+            style={{ display: "flex", alignItems: "center", gap: "1rem" }}
+          >
+            <UserAvatar>
+              <img src={user.avatar} alt="Avatar"></img>
+            </UserAvatar>
             <UserNickname>{user.nickname}</UserNickname>
           </Link>
         )}
@@ -82,14 +87,26 @@ const HeaderRight = styled.div`
   align-items: center;
 `;
 
-const UserAvatar = styled.img`
-  width: 2rem;
-  height: 2rem;
+const UserAvatar = styled.div`
+  width: 4rem;
+  height: 4rem;
+  overflow: hidden; /* 자식 요소가 부모 요소를 벗어나지 않도록 */
+  position: relative; /* 자식 요소를 절대 위치로 배치하기 위해 필요 */
+  border-radius: 50%;
   color: white;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* 이미지가 컨테이너를 덮도록 설정 */
+    position: absolute; /* 부모 요소를 기준으로 절대 위치 */
+    top: 0;
+    left: 0;
+  }
 `;
 
 const UserNickname = styled.span`
   color: white;
+  font-weight: 700;
 `;
 
 export default Header;

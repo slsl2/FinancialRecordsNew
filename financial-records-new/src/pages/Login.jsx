@@ -63,7 +63,7 @@ const Login = () => {
             type="button"
             onClick={handleLogin}
           />
-          <Link to="/signup">
+          <Link style={{ width: "100%" }} to="/signup">
             <Button
               width="100%"
               backgroundColor="#6c757d"
