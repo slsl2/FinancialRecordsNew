@@ -1,18 +1,21 @@
 import React from "react";
 import GlobalStyle from "./styles/GlobalStyle.jsx";
-import Router from "./shared/Router.jsx";
-import Layout from "./components/layout/Layout.jsx";
+import SharedRouter from "./shared/Router.jsx";
 import { RecordProvider } from "./contexts/RecordContext.jsx";
+import { AuthProvider } from "./contexts/AuthContext.jsx";
+import { UserProvider } from "./contexts/UserContext.jsx";
 
 const App = () => {
   return (
     <>
-      <RecordProvider>
-        <GlobalStyle />
-        <Layout>
-          <Router />
-        </Layout>
-      </RecordProvider>
+      <AuthProvider>
+        <UserProvider>
+          <RecordProvider>
+            <GlobalStyle />
+            <SharedRouter />
+          </RecordProvider>
+        </UserProvider>
+      </AuthProvider>
     </>
   );
 };
