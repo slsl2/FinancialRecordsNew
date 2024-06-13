@@ -1,91 +1,66 @@
-import React, { useEffect, useState, useContext } from "react";
-import axios from "axios";
-import { AuthContext } from "../contexts/AuthContext.jsx";
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import StyledContainer from "../styles/StyledContainer.jsx";
+import Button from "../components/atoms/Button.jsx";
+import { UserContext } from "../contexts/UserContext.jsx";
+import { updateProfile } from "../lib/api/auth.js";
 
 const Profile = () => {
-  const [userInfo, setUserInfo] = useState(null);
   const [newNickname, setNewNickname] = useState("");
   const [newAvatar, setNewAvatar] = useState(null);
-  const { isAuthenticated } = useContext(AuthContext);
+  const { user, setUser } = useContext(UserContext);
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   if (!isAuthenticated) {
-  //     alert("로그인이 필요합니다.");
-  //     navigate("/login");
-  //   } else {
-  //     const fetchUserInfo = async () => {
-  //       try {
-  //         const token = localStorage.getItem("accessToken");
-  //         const response = await axios.get(
-  //           "https://moneyfulpublicpolicy.co.kr/user",
-  //           {
-  //             headers: {
-  //               Authorization: `Bearer ${token}`,
-  //             },
-  //           }
-  //         );
-  //         setUserInfo(response.data);
-  //       } catch (error) {
-  //         console.error("Failed to fetch user info:", error);
-  //       }
-  //     };
-  //     fetchUserInfo();
-  //   }
-  // }, [isAuthenticated, navigate]);
+  const handleUpdateProfile = async () => {
+    const formData = new FormData();
+    formData.append("nickname", newNickname);
+    formData.append("avatar", newAvatar);
+    const response = await updateProfile(formData);
 
-  // const handleNicknameChange = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     const token = localStorage.getItem("accessToken");
-  //     const formData = new FormData();
-  //     formData.append("nickname", newNickname);
+    if (response.success) {
+      setUser({
+        ...user,
+        nickname: response.nickname,
+        avatar: response.avatar,
+      });
+      confirm("프로필 변경 성공!");
+      navigate("/");
+    }
+  };
 
-  //     const response = await axios.patch(
-  //       "https://moneyfulpublicpolicy.co.kr/profile",
-  //       formData,
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${token}`,
-  //           "Content-Type": "multipart/form-data",
-  //         },
-  //       }
-  //     );
-
-  //     if (response.data.success) {
-  //       setUserInfo((prevState) => ({
-  //         ...prevState,
-  //         nickname: response.data.nickname,
-  //       }));
-  //       alert("닉네임이 변경되었습니다.");
-  //       setNewNickname("");
-  //     } else {
-  //       alert("닉네임 변경에 실패했습니다.");
-  //     }
-  //   } catch (error) {
-  //     console.error("Failed to update nickname:", error);
-  //     alert("닉네임 변경에 실패했습니다.");
-  //   }
-  // };
-
-  // if (!userInfo) {
-  //   return <div>Loading...</div>;
-  // }
   return (
     <>
       <ProfilePage>
-        {" "}
         <ProfileContainer>
-          <input
-            type="text"
-            value={newNickname}
-            onChange={(e) => setNewNickname(e.target.value)}
-            placeholder="새 닉네임"
+          <span>{user.id}</span>
+          <InputDiv>
+            <span>닉네임</span>
+            <Input
+              type="text"
+              minLength="2"
+              maxLength="10"
+              onChange={(e) => setNewNickname(e.target.value)}
+              placeholder="닉네임"
+            />
+          </InputDiv>
+          <InputDiv>
+            <span>프로필 사진</span>
+            <Input
+              type="file"
+              accept="image/*"
+              onChange={(e) => setNewAvatar(e.target.files[0])}
+            />
+          </InputDiv>
+          <Button
+            width="100%"
+            backgroundColor="#999"
+            color="white"
+            margin="0 0 1.6rem 0"
+            contents="완료"
+            type="button"
+            onClick={handleUpdateProfile}
           />
-          <button type="submit">닉네임 변경</button>
         </ProfileContainer>
       </ProfilePage>
     </>
@@ -109,6 +84,21 @@ const ProfileContainer = styled(StyledContainer).attrs({ as: "div" })`
   max-width: 480px;
   margin: 0;
   padding: 4rem;
+`;
+
+const InputDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  width: 100%;
+`;
+const Input = styled.input`
+  font-size: 1.4rem;
+  margin: 0.8rem 0 1.6rem 0;
+  padding: 1rem;
+  box-sizing: border-box;
+  border-radius: 5px;
+  outline: none;
 `;
 
 export default Profile;
