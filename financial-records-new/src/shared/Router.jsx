@@ -1,10 +1,9 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import {
   BrowserRouter as Router,
   Route,
   Routes,
   Navigate,
-  useNavigate,
 } from "react-router-dom";
 import Home from "../pages/Home.jsx";
 import Record from "../pages/Record.jsx";
@@ -49,24 +48,13 @@ const PublicRoute = ({ element: Element, ...rest }) => {
 };
 
 const SharedRouter = () => {
-  const [selectedMonth, setSelectedMonth] = useState("");
-
   return (
     <>
       <Router>
         <Header />
         <MainLayout>
           <Routes>
-            <Route
-              path="/"
-              element={
-                <PrivateRoute
-                  element={Home}
-                  selectedMonth={selectedMonth}
-                  setSelectedMonth={setSelectedMonth}
-                />
-              }
-            />
+            <Route path="/" element={<PrivateRoute element={Home} />} />
             <Route path="/login" element={<PublicRoute element={Login} />} />
             <Route path="/signup" element={<PublicRoute element={SignUp} />} />
             <Route

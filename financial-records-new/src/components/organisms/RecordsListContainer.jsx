@@ -3,13 +3,24 @@ import StyledContainer from "../../styles/StyledContainer.jsx";
 import RecordBlock from "../molecules/RecordBlock.jsx";
 import { useQuery } from "@tanstack/react-query";
 import { getRecords } from "../../lib/api/record.js";
+import { useEffect, useState } from "react";
 
-const RecordsListContainer = () => {
+const RecordsListContainer = ({ selectedMonth }) => {
+  const [filteredRecords, setFilteredRecords] = useState([]);
   const {
     data: records = [],
     isLoading,
     error,
   } = useQuery({ queryKey: ["record"], queryFn: getRecords });
+
+  useEffect(() => {
+    if (selectedMonth) {
+      const filtered = records.filter(
+        (record) => record.date.split("-")[1] === selectedMonth
+      );
+      setFilteredRecords(filtered);
+    }
+  }, [records, selectedMonth]); // records와 selectedMonth가 변경될 때마다 호출되도록 하기 위해
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -17,17 +28,17 @@ const RecordsListContainer = () => {
 
   return (
     <RecordsUl>
-      {records.length === 0 ? (
+      {filteredRecords.length === 0 ? (
         <NoRecords>지출이 없습니다.</NoRecords>
       ) : (
-        records.map((record) => (
+        filteredRecords.map((filteredRecord) => (
           <RecordBlock
-            key={record.id}
-            id={record.id}
-            date={record.date}
-            item={record.item}
-            amount={record.amount}
-            description={record.description}
+            key={filteredRecord.id}
+            id={filteredRecord.id}
+            date={filteredRecord.date}
+            item={filteredRecord.item}
+            amount={filteredRecord.amount}
+            description={filteredRecord.description}
           />
         ))
       )}

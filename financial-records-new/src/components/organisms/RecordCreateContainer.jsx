@@ -1,66 +1,104 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
 import styled from "styled-components";
 import StyledContainer from "../../styles/StyledContainer";
 import Button from "../atoms/Button";
 import { v4 as uuidv4 } from "uuid";
+import { postRecord } from "../../lib/api/record";
+import { QueryClient, useMutation } from "@tanstack/react-query";
+import { UserContext } from "../../contexts/UserContext";
+import { useNavigate } from "react-router-dom";
 
-const RecordCreateContainer = () => {
-  const [date, setDate] = useState(new Date().toISOString().split("T")[0]); // 초기값을 현재 날짜로
-  const [item, setItem] = useState("");
-  const [amount, setAmount] = useState("");
-  const [description, setDescription] = useState("");
+const RecordCreateContainer = ({ setSelectedMonth }) => {
+  const { user } = useContext(UserContext);
+
+  const [newDate, setNewDate] = useState(
+    new Date().toISOString().split("T")[0]
+  ); // 초기값을 현재 날짜로
+  const [newItem, setNewItem] = useState("");
+  const [newAmount, setNewAmount] = useState("");
+  const [newDescription, setNewDescription] = useState("");
 
   const dateRef = useRef(null);
+
+  const queryClient = new QueryClient();
+  const navigate = useNavigate();
+
+  const mutation = useMutation({
+    mutationFn: postRecord,
+    onSuccess: () => {
+      // 새롭게 fetch
+      queryClient.invalidateQueries(["records"]);
+      navigate(0);
+    },
+  });
 
   useEffect(() => {
     // 컴포넌트가 처음 마운트될 때 날짜 입력 필드에 포커스를 설정
     dateRef.current.focus();
-  }, []);
+    // 컴포넌트가 마운트될 때 selectedMonth를 현재 날짜의 월로 설정
+    const initialMonth = newDate.split("-")[1];
+    setSelectedMonth(initialMonth);
+  }, [newDate, setSelectedMonth]);
 
   const handleDate = (e) => {
-    setDate(e.target.value);
+    setNewDate(e.target.value);
   };
   const handleItem = (e) => {
-    setItem(e.target.value);
+    setNewItem(e.target.value);
   };
   const handleAmount = (e) => {
-    setAmount(e.target.value);
+    setNewAmount(e.target.value);
   };
   const handleDescription = (e) => {
-    setDescription(e.target.value);
+    setNewDescription(e.target.value);
   };
 
-  const AddRecord = (e) => {
+  const handleAddRecord = (e) => {
     e.preventDefault();
-    if (!date || !item.trim() || !amount.trim() || !description.trim()) {
+    if (
+      !newDate ||
+      !newItem.trim() ||
+      !newAmount.trim() ||
+      !newDescription.trim()
+    ) {
       alert("모두 입력해주세요");
       return;
     }
-    setRecords((records) => [
-      ...records,
-      { id: uuidv4(), date, item, amount: +amount, description },
-    ]);
-    setDate("");
-    setItem("");
-    setAmount("");
-    setDescription("");
+    const newRecord = {
+      id: uuidv4(),
+      date: newDate,
+      item: newItem,
+      amount: parseInt(newAmount, 10),
+      description: newDescription,
+      createdBy: user.userId,
+    };
+
+    mutation.mutate(newRecord);
+
+    setNewDate("");
+    setNewItem("");
+    setNewAmount("");
+    setNewDescription("");
     dateRef.current.focus();
   };
-
   return (
     <>
-      {" "}
-      <RecordForm onSubmit={AddRecord}>
+      <RecordForm onSubmit={handleAddRecord}>
         <InputDiv>
           <span>날짜</span>
-          <Input ref={dateRef} onChange={handleDate} type="text" value={date} />
+          <Input
+            ref={dateRef}
+            onChange={handleDate}
+            type="date"
+            value={newDate}
+          />
         </InputDiv>
         <InputDiv>
           <span>항목</span>
           <Input
             onChange={handleItem}
             type="text"
-            value={item}
+            value={newItem}
             placeholder="지출 항목"
           />
         </InputDiv>
@@ -69,7 +107,7 @@ const RecordCreateContainer = () => {
           <Input
             onChange={handleAmount}
             type="number"
-            value={amount}
+            value={newAmount}
             placeholder="지출 금액"
           />
         </InputDiv>
@@ -78,7 +116,7 @@ const RecordCreateContainer = () => {
           <Input
             onChange={handleDescription}
             type="text"
-            value={description}
+            value={newDescription}
             placeholder="지출 내용"
           />
         </InputDiv>
