@@ -64,7 +64,9 @@ const Profile = () => {
         <ProfileContainer>
           <UserId>@{user.userId}</UserId>
           {previewAvatar && (
-            <AvatarPreview src={previewAvatar} alt="Avatar Preview" />
+            <AvatarPreview>
+              <img src={previewAvatar} alt="Avatar Preview" />
+            </AvatarPreview>
           )}
           <InputDiv>
             <span>프로필 변경</span>
@@ -120,6 +122,7 @@ const ProfileContainer = styled(StyledContainer).attrs({ as: "div" })`
   align-items: center;
   width: 60%;
   max-width: 480px;
+  min-width: 200px;
   margin: 0;
   padding: 4rem;
 `;
@@ -149,11 +152,21 @@ const Input = styled.input`
   outline: none;
 `;
 
-const AvatarPreview = styled.img`
-  width: 70%;
-  object-fit: cover;
+const AvatarPreview = styled.div`
+  width: 60%;
+  overflow: hidden; /* 자식 요소가 부모 요소를 벗어나지 않도록 */
+  position: relative; /* 자식 요소를 절대 위치로 배치하기 위해 필요 */
   border-radius: 50%;
   margin-bottom: 2rem;
+  padding-top: 60%; /* 이 방법으로 너비 높이 비율을 맞춘다. */
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* 이미지가 컨테이너를 덮도록 설정 */
+    position: absolute; /* 부모 요소를 기준으로 절대 위치 */
+    top: 0;
+    left: 0;
+  }
 `;
 
 export default Profile;

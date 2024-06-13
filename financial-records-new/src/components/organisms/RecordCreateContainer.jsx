@@ -136,6 +136,7 @@ const RecordCreateContainer = ({ setSelectedMonth }) => {
 const RecordForm = styled(StyledContainer).attrs({ as: "form" })`
   font-size: 1.4rem;
   display: flex;
+  gap: 2rem;
   justify-content: center;
   align-items: end;
   flex-wrap: wrap;
@@ -146,7 +147,7 @@ const InputDiv = styled.div`
 `;
 const Input = styled.input`
   font-size: 1.4rem;
-  margin: 1rem 1rem 0 0;
+  margin-top: 1rem;
   padding: 1rem;
   width: 15rem;
 `;
