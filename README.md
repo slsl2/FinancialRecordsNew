@@ -4,6 +4,9 @@
 https://financial-records-new-wyws.vercel.app/
 ![image](https://github.com/slsl2/FinancialRecordsNew/assets/97243275/5c92aa02-ca93-4c52-8fdf-656b5f9103fd)
 
+## JSON-server 배포 레포지토리
+https://github.com/slsl2/FinancialRecordsNewJsonServer
+
 ## 필수 구현 사항 모두 완료
 - 회원가입 / 로그인 기능
 - 프로필 수정
