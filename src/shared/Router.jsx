@@ -48,10 +48,11 @@ const PublicRoute = ({ element: Element, ...rest }) => {
 };
 
 const SharedRouter = () => {
+  const { isAuthenticated } = useContext(AuthContext);
   return (
     <>
       <Router>
-        <Header />
+        {isAuthenticated && <Header />}
         <MainLayout>
           <Routes>
             <Route path="/" element={<PrivateRoute element={Home} />} />
