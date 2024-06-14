@@ -19,9 +19,9 @@ const RecordsListContainer = ({ selectedMonth }) => {
 
   useEffect(() => {
     if (selectedMonth) {
-      const filtered = records.filter(
-        (record) => record.date.split("-")[1] === selectedMonth
-      );
+      const filtered = records
+        .filter((record) => record.date.split("-")[1] === selectedMonth)
+        .sort((a, b) => new Date(a.date) - new Date(b.date));
       setFilteredRecords(filtered);
     }
   }, [records, selectedMonth]); // records와 selectedMonth가 변경될 때마다 호출되도록 하기 위해
