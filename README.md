@@ -1,5 +1,9 @@
 # FinancialRecordsNew
 
+## 배포 웹 주소
+https://financial-records-new-wyws.vercel.app/
+![image](https://github.com/slsl2/FinancialRecordsNew/assets/97243275/5c92aa02-ca93-4c52-8fdf-656b5f9103fd)
+
 ## 필수 구현 사항 모두 완료
 - 회원가입 / 로그인 기능
 - 프로필 수정
@@ -13,10 +17,6 @@
 - accessToken 60분 유효기간 부여, 만료된 경우 로그아웃 처리
 - Context 사용해 유저 정보 관리
 
-## 해결 못 한 이슈
+## 미해결 이슈
 - 프로필 수정 시, 업로드를 새로 하지 않으면 프로필 사진이 null로 저장되는 이슈:
   새로 업로드 하지 않고 저장하면 기존의 프로필 사진이 지워짐
-  
-## 배포 웹 주소
-https://financial-records-new-wyws.vercel.app/
-![image](https://github.com/slsl2/FinancialRecordsNew/assets/97243275/5c92aa02-ca93-4c52-8fdf-656b5f9103fd)
