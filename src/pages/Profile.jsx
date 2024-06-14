@@ -5,6 +5,7 @@ import StyledContainer from "../styles/StyledContainer.jsx";
 import Button from "../components/atoms/Button.jsx";
 import { UserContext } from "../contexts/UserContext.jsx";
 import { updateProfile } from "../lib/api/auth.js";
+import Swal from "sweetalert2";
 
 const Profile = () => {
   const [newNickname, setNewNickname] = useState("");
@@ -22,7 +23,10 @@ const Profile = () => {
 
   const handleUpdateProfile = async () => {
     if (newNickname.length < 2 || newNickname.length > 10) {
-      alert("닉네임은 2글자에서 10글자 이내로만 가능합니다!");
+      Swal.fire({
+        title: "닉네임은 2글자에서 10글자 이내로만 가능합니다!",
+        confirmButtonText: "확인",
+      });
       return;
     }
 

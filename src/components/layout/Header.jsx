@@ -4,6 +4,7 @@ import { AuthContext } from "../../contexts/AuthContext";
 import styled from "styled-components";
 import Button from "../atoms/Button";
 import { UserContext } from "../../contexts/UserContext";
+import Swal from "sweetalert2";
 
 const Header = () => {
   const { isAuthenticated, logout } = useContext(AuthContext);
@@ -12,11 +13,20 @@ const Header = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    const confirmLogout = window.confirm("정말로 로그아웃 하시겠습니까?");
-    if (confirmLogout) {
-      logout();
-      navigate("/");
-    }
+    Swal.fire({
+      title: "Are you sure?",
+      text: "정말 로그아웃 하시겠습니까?",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "네",
+      cancelButtonText: "취소",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        logout();
+        navigate("/");
+      }
+    });
   };
   return (
     <HeaderContainer>

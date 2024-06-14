@@ -19,6 +19,7 @@
     "style-components": "^0.1.0",
     "styled-components": "^6.1.11",
     "styled-reset": "^4.5.2",
+    "sweetalert2": "^11.11.1",
     "uuid": "^10.0.0"
   },
   "devDependencies": {

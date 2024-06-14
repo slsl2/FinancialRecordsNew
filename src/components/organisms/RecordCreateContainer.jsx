@@ -7,6 +7,7 @@ import { postRecord } from "../../lib/api/record";
 import { QueryClient, useMutation } from "@tanstack/react-query";
 import { UserContext } from "../../contexts/UserContext";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const RecordCreateContainer = ({ setSelectedMonth }) => {
   const { user } = useContext(UserContext);
@@ -61,7 +62,10 @@ const RecordCreateContainer = ({ setSelectedMonth }) => {
       !newAmount.trim() ||
       !newDescription.trim()
     ) {
-      alert("모두 입력해주세요");
+      Swal.fire({
+        title: "모두 입력해주세요",
+        confirmButtonText: "확인",
+      });
       return;
     }
     const newRecord = {

@@ -5,6 +5,8 @@ import { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { deleteRecord, getRecord, putRecord } from "../../lib/api/record.js";
+import Loading from "../molecules/Loading.jsx";
+import Swal from "sweetalert2";
 
 const RecordUpdateContainer = () => {
   const { id } = useParams();
@@ -60,10 +62,21 @@ const RecordUpdateContainer = () => {
   };
 
   const handleDeleteRecord = () => {
-    if (!confirm("정말 삭제하시겠습니까?")) {
-      return false;
-    }
-    mutationDelete.mutate(id);
+    Swal.fire({
+      title: "Are you sure?",
+      text: "정말 삭제하시겠습니까?",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "네",
+      cancelButtonText: "삭제 취소",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        mutationDelete.mutate(id);
+      } else if (result.isDenied) {
+        return false;
+      }
+    });
   };
 
   const goBack = (e) => {
@@ -72,7 +85,7 @@ const RecordUpdateContainer = () => {
   };
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   return (

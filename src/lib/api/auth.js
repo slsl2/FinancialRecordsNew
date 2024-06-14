@@ -1,4 +1,5 @@
 import axios from "axios";
+import Swal from "sweetalert2";
 
 const AUTH_API_HOST = "https://moneyfulpublicpolicy.co.kr";
 
@@ -11,8 +12,10 @@ export const register = async ({ id, password, nickname }) => {
     });
     return response.data;
   } catch (error) {
-    console.log(error?.response?.data?.message);
-    alert(error?.response?.data?.message);
+    Swal.fire({
+      title: error?.response?.data?.message,
+      confirmButtonText: "확인",
+    });
   }
 };
 
@@ -25,8 +28,10 @@ export const login = async ({ id, password }) => {
     localStorage.setItem("accessToken", response.data.accessToken);
     return response.data;
   } catch (error) {
-    console.log(error?.response?.data?.message);
-    alert(error?.response?.data?.message);
+    Swal.fire({
+      title: error?.response?.data?.message,
+      confirmButtonText: "확인",
+    });
   }
 };
 
@@ -41,7 +46,10 @@ export const getUserInfo = async () => {
       });
       return response.data;
     } catch (error) {
-      alert("AccessToken이 만료되었습니다.");
+      Swal.fire({
+        title: "AccessToken이 만료되었습니다.",
+        confirmButtonText: "확인",
+      });
       localStorage.clear();
     }
   }
@@ -59,7 +67,10 @@ export const updateProfile = async (formData) => {
       });
       return response.data;
     } catch (error) {
-      alert("프로필 변경 실패");
+      Swal.fire({
+        title: "프로필 변경 실패",
+        confirmButtonText: "확인",
+      });
     }
   }
 };

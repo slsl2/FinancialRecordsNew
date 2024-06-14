@@ -5,6 +5,7 @@ import StyledContainer from "../styles/StyledContainer";
 import Button from "../components/atoms/Button";
 import { Link } from "react-router-dom";
 import { register } from "../lib/api/auth.js";
+import Swal from "sweetalert2";
 
 const SignUp = () => {
   const [id, setId] = useState("");
@@ -14,15 +15,24 @@ const SignUp = () => {
 
   const handleRegister = async () => {
     if (id.length < 4 || id.length > 10) {
-      alert("아이디는 4글자에서 10글자 이내로만 가능합니다!");
+      Swal.fire({
+        title: "아이디는 4글자에서 10글자 이내로만 가능합니다!",
+        confirmButtonText: "확인",
+      });
       return;
     }
     if (password.length < 8 || password.length > 15) {
-      alert("비밀번호는 8글자에서 15글자 이내로만 가능합니다!");
+      Swal.fire({
+        title: "비밀번호는 8글자에서 15글자 이내로만 가능합니다!",
+        confirmButtonText: "확인",
+      });
       return;
     }
     if (nickname.length < 2 || nickname.length > 10) {
-      alert("닉네임은 2글자에서 10글자 이내로만 가능합니다!");
+      Swal.fire({
+        title: "닉네임은 2글자에서 10글자 이내로만 가능합니다!",
+        confirmButtonText: "확인",
+      });
       return;
     }
 
@@ -32,7 +42,10 @@ const SignUp = () => {
       nickname: nickname,
     });
     if (response) {
-      confirm("회원가입이 완료되었습니다.");
+      Swal.fire({
+        title: "회원가입이 완료되었습니다.",
+        confirmButtonText: "확인",
+      });
       navigate("/login");
     }
   };

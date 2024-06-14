@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { login } from "../lib/api/auth.js";
 import { AuthContext } from "../contexts/AuthContext.jsx";
 import { UserContext } from "../contexts/UserContext.jsx";
+import Swal from "sweetalert2";
 
 const Login = () => {
   const [id, setId] = useState("");
@@ -25,10 +26,13 @@ const Login = () => {
 
     if (accessToken) {
       authLogin(accessToken);
-      confirm("로그인 성공!");
+      Swal.fire({
+        title: "로그인 성공!",
+        confirmButtonText: "확인",
+      });
       navigate("/");
     } else {
-      alert("로그인 실패");
+      Swal.fire({ title: "로그인 실패!", confirmButtonText: "확인" });
     }
   };
 

@@ -1,4 +1,5 @@
 import axios from "axios";
+import Swal from "sweetalert2";
 
 const recordsUrl = import.meta.env.VITE_REACT_APP_RECORDS;
 
@@ -8,7 +9,10 @@ export const getRecords = async () => {
     return response.data;
   } catch (error) {
     console.log(error);
-    alert("데이터를 로드하지 못 했습니다!");
+    Swal.fire({
+      title: "데이터를 로드하지 못 했습니다!",
+      confirmButtonText: "확인",
+    });
   }
 };
 
@@ -18,7 +22,10 @@ export const getRecord = async ({ queryKey }) => {
     return response.data;
   } catch (error) {
     console.log(error);
-    alert("데이터를 로드하지 못 했습니다!");
+    Swal.fire({
+      title: "데이터를 로드하지 못 했습니다!",
+      confirmButtonText: "확인",
+    });
   }
 };
 
@@ -28,7 +35,10 @@ export const postRecord = async (newRecord) => {
     return data;
   } catch (error) {
     console.log(error);
-    alert("데이터를 로드하지 못 했습니다!");
+    Swal.fire({
+      title: "데이터를 로드하지 못 했습니다!",
+      confirmButtonText: "확인",
+    });
   }
 };
 
@@ -39,7 +49,10 @@ export const putRecord = async (updatedRecord) => {
     return data;
   } catch (error) {
     console.log(error);
-    alert("수정 실패!");
+    Swal.fire({
+      title: "수정 실패!",
+      confirmButtonText: "확인",
+    });
   }
 };
 
@@ -49,6 +62,9 @@ export const deleteRecord = async (id) => {
     return data;
   } catch (error) {
     console.log(error);
-    alert("삭제 실패!");
+    Swal.fire({
+      title: "삭제 실패!",
+      confirmButtonText: "확인",
+    });
   }
 };

@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getRecords } from "../../lib/api/record.js";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../contexts/UserContext.jsx";
+import Loading from "../molecules/Loading.jsx";
 
 const RecordsListContainer = ({ selectedMonth }) => {
   const { user } = useContext(UserContext);
@@ -26,7 +27,7 @@ const RecordsListContainer = ({ selectedMonth }) => {
   }, [records, selectedMonth]); // records와 selectedMonth가 변경될 때마다 호출되도록 하기 위해
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   return (
